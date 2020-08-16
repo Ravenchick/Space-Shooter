@@ -83,6 +83,9 @@ public class PowerUp : MonoBehaviour
                     case 3:
                         player.reloadAmmo();
                         break;
+                    case 4:
+                        player.recoverHealth();
+                        break;
 
                 }
             }

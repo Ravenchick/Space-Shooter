@@ -279,11 +279,41 @@ public class Player : MonoBehaviour
         
     }
 
+    void DamageRepair()
+    {
+        if(_damageEffect[0].activeSelf == true)
+        {
+            _damageEffect[0].gameObject.SetActive(false);
+            A--;
+        }
+        else 
+        {
+            _damageEffect[1].gameObject.SetActive(false);
+            B++;
+        }
+    }
+
     public void reloadAmmo()
     {
         _ammoAmount += 15;
         PlayPowerUpSound();
 
+    }
+
+    public void recoverHealth()
+    {
+        PlayPowerUpSound();
+        if (_live < 3)
+        {
+            _live++;
+            _UiManager.UpdateLives(_live);
+            DamageRepair();
+        }
+        if (_live == 3)
+        {
+            A = 0;
+            B = 2;              
+        }
     }
     void PlayLaserSound()
     {
