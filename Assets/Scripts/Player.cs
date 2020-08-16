@@ -33,12 +33,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speedBoostDuration;
     [SerializeField]
-    private bool _isShieldActivate = false;
+    private bool _isShieldActivate = false;    
+    private int _shieldLives = 3;
     
 
     private UiManager _UiManager;
 
     private GameObject Shield;
+
+    private shield _shieldscript;
 
     [SerializeField]
     private int Score;
@@ -72,6 +75,8 @@ public class Player : MonoBehaviour
         _UiManager = GameObject.Find("Canvas").GetComponent<UiManager>();
 
         _audio = GetComponent<AudioSource>();
+
+        _shieldscript = GameObject.Find("Shield").GetComponent<shield>();
         
     }
     // Start is called before the first frame update
@@ -156,10 +161,17 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActivate == true)
+        if (_isShieldActivate == true && _shieldLives > 1)
+        {            
+            _shieldLives--;
+            _shieldscript.Damage(_shieldLives);
+            return;
+        }
+        else if (_isShieldActivate == true && _shieldLives <= 1)
         {
             _isShieldActivate = false;
             Shield.SetActive(false);
+            _shieldLives = 3;
             return;
         }
 
@@ -226,6 +238,8 @@ public class Player : MonoBehaviour
     public void ActivateShield()
     {
         PlayPowerUpSound();
+        _shieldLives = 3;
+        _shieldscript.shieldReset();
         _isShieldActivate = true;
         Shield.SetActive(true);
     }
