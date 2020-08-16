@@ -279,6 +279,12 @@ public class Player : MonoBehaviour
         
     }
 
+    public void reloadAmmo()
+    {
+        _ammoAmount += 15;
+        PlayPowerUpSound();
+
+    }
     void PlayLaserSound()
     {
         _audio.clip = _laserSound;

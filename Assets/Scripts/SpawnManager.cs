@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(StartGame());
+        
     }
 
     // Update is called once per frame
@@ -51,9 +53,11 @@ public class SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         StartCoroutine(enemySpawn());
+        yield return new WaitForSeconds(10f);
+        StartCoroutine(SpawnBasicPowerUps());
         yield return new WaitForSeconds(4f);
         StartCoroutine(AsteroidSpawn());
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(2f);
         StartCoroutine(BoostSpawn());
         StartCoroutine(gettingHard());
     }
@@ -171,6 +175,39 @@ public class SpawnManager : MonoBehaviour
                 _boostB -= 0.6f;
             }
             yield return new WaitForSeconds(3f);
+        }
+    }
+
+    IEnumerator SpawnBasicPowerUps()
+    {
+        while (_spawning == true)
+        {
+            float _timer = Random.Range(7f, 13f);
+            float _randomizerPosition = Random.Range(-1f, 1f);
+            int _boostRandomizer = Random.Range(0, 3);
+            float randomHigh = Random.Range(-2.73f, 4.55f);
+
+            if (_randomizerPosition < 0)
+            {
+
+                _position = new Vector3(-11.38f, randomHigh, 0f);
+
+
+
+            }
+
+
+            else if (_randomizerPosition > 0)
+            {
+
+                _position = new Vector3(11.38f, randomHigh, 0f);
+
+            }
+
+            GameObject newPowerUp = Instantiate(powerBoost[3], _position, Quaternion.identity);
+            newPowerUp.transform.parent = gameObject.transform;
+
+            yield return new WaitForSeconds(_timer);
         }
     }
 }

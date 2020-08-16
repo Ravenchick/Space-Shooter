@@ -80,6 +80,9 @@ public class PowerUp : MonoBehaviour
                     case 2:
                         player.ActivateShield();
                         break;
+                    case 3:
+                        player.reloadAmmo();
+                        break;
 
                 }
             }
