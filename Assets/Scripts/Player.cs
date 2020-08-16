@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _live = 3;
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private int _ammoAmount = 15;
 
     private bool TripleShootReady = false;
     [SerializeField]
@@ -64,6 +66,8 @@ public class Player : MonoBehaviour
     private AudioClip _explosionSound;
     [SerializeField]
     private AudioClip _powerUpSound;
+    [SerializeField]
+    private AudioClip _notAmmo;
 
     private void Awake()
     {
@@ -100,12 +104,18 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoAmount> 0)
         {
             ShootLaser();
+            _ammoAmount--;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoAmount <= 0)
+        {
+            PlayNoAmmoSound();
         }
 
-        
+
+
     }
 
     void CalculateMovement()
@@ -193,6 +203,7 @@ public class Player : MonoBehaviour
     {
         TripleShootReady = true;
         StartCoroutine(TripleShootPower());
+        _ammoAmount = 30;
     }
 
     IEnumerator TripleShootPower()
@@ -283,6 +294,12 @@ public class Player : MonoBehaviour
     void PlayPowerUpSound()
     {
         _audio.clip = _powerUpSound;
+        _audio.Play();
+    }
+
+    void PlayNoAmmoSound()
+    {
+        _audio.clip = _notAmmo;
         _audio.Play();
     }
 }
