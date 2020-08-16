@@ -164,7 +164,7 @@ public class SpawnManager : MonoBehaviour
                 _enemyA -= 0.1f;
                 _enemyB -= 0.1f;
             }
-            if (_boostA > 4f && _boostB > 5.5f)
+            if (_boostA > 10f && _boostB > 11f)
             {
                 _boostA -= 1f;
                 _boostB -= 1f;
@@ -182,10 +182,11 @@ public class SpawnManager : MonoBehaviour
     {
         while (_spawning == true)
         {
-            float _timer = Random.Range(7f, 13f);
+            float _timer = Random.Range(7f, 10f);
             float _randomizerPosition = Random.Range(-1f, 1f);
-            int _boostRandomizer = Random.Range(0, 3);
+            float _boostRandomizer = Random.Range(0, 10);
             float randomHigh = Random.Range(-2.73f, 4.55f);
+            int _boostSelected;
 
             if (_randomizerPosition < 0)
             {
@@ -204,7 +205,16 @@ public class SpawnManager : MonoBehaviour
 
             }
 
-            GameObject newPowerUp = Instantiate(powerBoost[3], _position, Quaternion.identity);
+            if(_boostRandomizer > 8)
+            {
+                _boostSelected = 3;
+            }
+            else
+            {
+                _boostSelected = 4;
+            }
+
+            GameObject newPowerUp = Instantiate(powerBoost[_boostSelected], _position, Quaternion.identity);
             newPowerUp.transform.parent = gameObject.transform;
 
             yield return new WaitForSeconds(_timer);
