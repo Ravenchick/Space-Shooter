@@ -1106,6 +1106,7 @@ MonoBehaviour:
   _laser: {fileID: 4216047733120275878, guid: 68c9f3f5c82400c418502f9236cdcbe3, type: 3}
   _TripleLaser: {fileID: 5070330283793242284, guid: 2b3321a82034d0c409308bd1e9dcdb26,
     type: 3}
+  _sprintSpeed: 15
   _fireRate: 0.4
   _live: 3
   TripleShootFireRate: 0.1
@@ -1288,8 +1289,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 72
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 4.550609
+  MaxDistance: 18.609459
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

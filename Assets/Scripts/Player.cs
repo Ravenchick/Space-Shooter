@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     private GameObject _laser;
     [SerializeField]
     private GameObject _TripleLaser;
+    [SerializeField]
+    private float _sprintSpeed = 15f;
+    private float _speedBackUp;
 
     private Transform _shootingPoint;
     [SerializeField]
@@ -24,12 +27,14 @@ public class Player : MonoBehaviour
     private float TripleShootFireRate;
     [SerializeField]
     private float TripleShootDuration;
+    private bool _isSpeedBoostActive = false;
     [SerializeField]
     private float _speedBoost;
     [SerializeField]
     private float _speedBoostDuration;
     [SerializeField]
     private bool _isShieldActivate = false;
+    
 
     private UiManager _UiManager;
 
@@ -81,6 +86,8 @@ public class Player : MonoBehaviour
         }
 
         Shield.SetActive(false);
+        
+        _speedBackUp = speed;
     }
 
     // Update is called once per frame
@@ -116,7 +123,20 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(13.36f, transform.position.y, 0);
         }
+
+        
+
+        if (Input.GetKey(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        {
+            speed = _sprintSpeed;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        {
+            speed = _speedBackUp;
+        }
     }
+
+    
 
     void ShootLaser()
     {
@@ -186,12 +206,12 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedBoostPower()
     {
+        _isSpeedBoostActive = true;
         PlayPowerUpSound();
         _speedEffect.gameObject.SetActive(true);
         _thruster.gameObject.SetActive(false);
-        float _speedBackUp;
-        _speedBackUp = speed;
-
+        
+        
         speed = speed + _speedBoost;
 
         yield return new WaitForSeconds(_speedBoostDuration);
@@ -199,6 +219,7 @@ public class Player : MonoBehaviour
         speed = _speedBackUp;
         _speedEffect.gameObject.SetActive(false);
         _thruster.gameObject.SetActive(true);
+        _isSpeedBoostActive = false;
 
     }
 
