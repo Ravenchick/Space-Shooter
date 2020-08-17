@@ -700,6 +700,7 @@ MonoBehaviour:
   - {fileID: 4118668804381779887, guid: c3e61b207c43e784191f3418d7e52e69, type: 3}
   - {fileID: 6155749794190156291, guid: 0d4ce64acc5ea234288fa6dd235a7785, type: 3}
   - {fileID: 6155749794190156291, guid: 5527249f6ffaa8b4f9140126d0dd1404, type: 3}
+  - {fileID: 6155749794190156291, guid: b9d9914e1b4ef71409c3b2bdbdcc7022, type: 3}
   _asteroid: {fileID: 81938874933643876, guid: 13d0561348d446344893882cd755e2ac, type: 3}
   _clear: {fileID: 823537731}
 --- !u!4 &460083492
@@ -1108,6 +1109,9 @@ MonoBehaviour:
   _laser: {fileID: 4216047733120275878, guid: 68c9f3f5c82400c418502f9236cdcbe3, type: 3}
   _TripleLaser: {fileID: 5070330283793242284, guid: 2b3321a82034d0c409308bd1e9dcdb26,
     type: 3}
+  _protonLaser: {fileID: 4216047733120275878, guid: c718821aaf22bfb42b86e06c07262471,
+    type: 3}
+  _protonLaserDuration: 5
   _sprintSpeed: 15
   _fireRate: 0.4
   _live: 3

@@ -70,6 +70,20 @@ public class EnemyController : MonoBehaviour
                 _player.AddScore(points);
             }
         }
+        
+        if (other.gameObject.tag == "ProtonLaser")
+        {
+            _audio.Play();
+            speed = 0;
+            _animator.SetTrigger("Explotion");
+            Destroy(gameObject, 2.38f);            
+            _collider.enabled = false;
+
+            if (_player != null)
+            {
+                _player.AddScore(points);
+            }
+        }
 
         if (other.gameObject.tag == "Player")
         {

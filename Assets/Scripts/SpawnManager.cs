@@ -57,9 +57,11 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnBasicPowerUps());
         yield return new WaitForSeconds(4f);
         StartCoroutine(AsteroidSpawn());
+        StartCoroutine(ProtonSpawn());
         yield return new WaitForSeconds(2f);
         StartCoroutine(BoostSpawn());
         StartCoroutine(gettingHard());
+        
     }
 
     IEnumerator enemySpawn()
@@ -205,19 +207,54 @@ public class SpawnManager : MonoBehaviour
 
             }
 
-            if(_boostRandomizer > 8)
+            if(_boostRandomizer > 7)
             {
-                _boostSelected = 3;
+                _boostSelected = 4;
             }
             else
             {
-                _boostSelected = 4;
+                _boostSelected = 3;
             }
 
             GameObject newPowerUp = Instantiate(powerBoost[_boostSelected], _position, Quaternion.identity);
             newPowerUp.transform.parent = gameObject.transform;
 
             yield return new WaitForSeconds(_timer);
+        }
+    }
+    IEnumerator ProtonSpawn()
+    {
+        while (_spawning == true)
+        {
+            float _isSpawning = Random.Range(0f, 10f);
+
+            if (_isSpawning > 8)
+            {
+
+
+                float _randomizerPosition = Random.Range(-1f, 1f);
+                float randomHigh = Random.Range(-2.73f, 4.55f);
+
+                if (_randomizerPosition < 0)
+                {
+
+                    _position = new Vector3(-11.38f, randomHigh, 0f);
+
+
+
+                }
+
+                else if (_randomizerPosition > 0)
+                {
+
+                    _position = new Vector3(11.38f, randomHigh, 0f);
+
+                }
+
+                GameObject newPowerUp = Instantiate(powerBoost[5], _position, Quaternion.identity);
+                newPowerUp.transform.parent = gameObject.transform;
+            }
+            yield return new WaitForSeconds(10f);
         }
     }
 }

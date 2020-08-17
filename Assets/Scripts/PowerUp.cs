@@ -86,7 +86,9 @@ public class PowerUp : MonoBehaviour
                     case 4:
                         player.recoverHealth();
                         break;
-
+                    case 5:
+                        player.activateProtonLaser();
+                        break;
                 }
             }
         }

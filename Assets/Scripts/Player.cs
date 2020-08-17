@@ -11,6 +11,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _TripleLaser;
     [SerializeField]
+    private GameObject _protonLaser;
+    private bool _isProtonLaserActive;
+    [SerializeField]
+    private float _protonLaserDuration = 5f;
+
+    [SerializeField]
     private float _sprintSpeed = 15f;
     private float _speedBackUp;
 
@@ -157,9 +163,13 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        if (TripleShootReady == true)
+        if (TripleShootReady == true && _isProtonLaserActive == false)
         {
             Instantiate(_TripleLaser, _shootingPoint.position, Quaternion.identity);
+        }
+        else if(_isProtonLaserActive == true)
+        {
+            Instantiate(_protonLaser, _shootingPoint.position, Quaternion.identity);
         }
         else
         {
@@ -220,6 +230,20 @@ public class Player : MonoBehaviour
         _fireRate = fireRateBackUp;
 
 
+    }
+
+    public void activateProtonLaser()
+    {
+        PlayPowerUpSound();
+        StartCoroutine(ProtonLaserPower());
+        _ammoAmount += 10;
+    }
+
+    IEnumerator ProtonLaserPower()
+    {
+        _isProtonLaserActive = true;
+        yield return new WaitForSeconds(_protonLaserDuration);
+        _isProtonLaserActive = false;
     }
 
     public void SpeedPower()

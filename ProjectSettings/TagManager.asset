@@ -8,6 +8,7 @@ TagManager:
   - Laser
   - TripleShoot
   - Clear
+  - ProtonLaser
   layers:
   - Default
   - TransparentFX
