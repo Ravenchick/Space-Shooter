@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _sprintSpeed = 15f;
     private float _speedBackUp;
+    private bool _isSprinting = false;
+    private bool _canSprint = true;
 
     private Transform _shootingPoint;
     [SerializeField]
@@ -103,6 +105,8 @@ public class Player : MonoBehaviour
         Shield.SetActive(false);
         
         _speedBackUp = speed;
+
+        StaminaBar.instance.ConsumeStamina(1);
     }
 
     // Update is called once per frame
@@ -147,17 +151,45 @@ public class Player : MonoBehaviour
 
         
 
-        if (Input.GetKey(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        if (Input.GetKey(KeyCode.LeftShift) && _isSpeedBoostActive == false && _canSprint == true)
         {
             speed = _sprintSpeed;
+            StaminaBar.instance.ConsumeStamina(1);
+            _isSprinting = true;
+            StopCoroutine(RecoverStamina());
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift) && _isSpeedBoostActive == false)
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _isSpeedBoostActive == false && _canSprint == true)
+        {
+            speed = _speedBackUp;            
+            StartCoroutine(RecoverStamina());
+            _isSprinting = false;
+        }
+
+        
+        if(StaminaBar.instance._currentStamina >= 100)
+        {
+            StopCoroutine(RecoverStamina());
+            _canSprint = true;
+        }
+        if(StaminaBar.instance._currentStamina <= 0)
         {
             speed = _speedBackUp;
+            _isSprinting = false;
+            _canSprint = false;
+            StaminaBar.instance._currentStamina = 1;
+            StartCoroutine(RecoverStamina());
         }
     }
 
-    
+    private IEnumerator RecoverStamina()
+    {
+        yield return new WaitForSeconds(1.5f);
+        while(_isSprinting == false)
+        {
+            StaminaBar.instance.RecoverStamina(1);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }    
 
     void ShootLaser()
     {
