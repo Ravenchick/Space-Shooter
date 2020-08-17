@@ -77,6 +77,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _notAmmo;
 
+    private CameraShaking _shaking;
+
     private void Awake()
     {
         Shield = GameObject.Find("Shield");
@@ -89,6 +91,8 @@ public class Player : MonoBehaviour
         _audio = GetComponent<AudioSource>();
 
         _shieldscript = GameObject.Find("Shield").GetComponent<shield>();
+
+        _shaking = GameObject.Find("Main Camera").GetComponent<CameraShaking>();
         
     }
     // Start is called before the first frame update
@@ -228,6 +232,7 @@ public class Player : MonoBehaviour
         }
 
         _live--;
+        StartCoroutine(_shaking.Shaking(0.15f, 0.4f));
         _UiManager.UpdateLives(_live);
         DamageEffect();
 
@@ -237,6 +242,7 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
             _UiManager.GameOver();
             _spawnManager.OnPLayersDead();
+            _shaking.RestarPosition();
         }
 
     }
