@@ -21,6 +21,12 @@ public class EnemyController : MonoBehaviour
     private AudioSource _audio;
     [SerializeField]
     private AudioClip _explosionSound;
+    [SerializeField]
+    private AudioClip _shieldDown;
+
+    [SerializeField]
+    private GameObject _shield;
+    private bool _isShieldActive = false;
 
     private void Awake()
     {
@@ -28,12 +34,26 @@ public class EnemyController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _collider = GetComponent<Collider2D>();
         _audio = GetComponent<AudioSource>();
+        //_shield = GetComponent<GameObject>();
     }
     void Start()
     {
         transform.position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
         StartCoroutine(scoring());
         _audio.clip = _explosionSound;
+
+        float gotshield = Random.Range(0f, 10f);
+
+        if(gotshield > 7.5)
+        {
+            _shield.SetActive(true);
+            _isShieldActive = true;
+        }
+        else
+        {
+            _shield.SetActive(false);
+            
+        }
     }
 
     // Update is called once per frame
@@ -57,27 +77,41 @@ public class EnemyController : MonoBehaviour
     {
         
         if (other.gameObject.tag == "Laser")
-        {            
-            _audio.Play();
-            speed = 0;
-            _animator.SetTrigger("Explotion");
-            Destroy(gameObject, 2.38f);
-            Destroy(other.gameObject);
-            _collider.enabled = false;
-
-            if (_player != null)
+        {      
+            if (_isShieldActive == false)
             {
-                _player.AddScore(points);
+                _audio.clip = _explosionSound;
+                _audio.Play();
+                speed = 0;
+                _animator.SetTrigger("Explotion");
+                Destroy(gameObject, 2.38f);
+                Destroy(other.gameObject);
+                _collider.enabled = false;
+
+                if (_player != null)
+                {
+                    _player.AddScore(points);
+                }
+            }
+            else
+            {
+                _audio.clip = _shieldDown;
+                _audio.Play();
+                _shield.SetActive(false);
+                _isShieldActive = false;
+                Destroy(other.gameObject);
             }
         }
         
         if (other.gameObject.tag == "ProtonLaser")
         {
+            _audio.clip = _explosionSound;
             _audio.Play();
             speed = 0;
             _animator.SetTrigger("Explotion");
             Destroy(gameObject, 2.38f);            
             _collider.enabled = false;
+            _shield.SetActive(false);
 
             if (_player != null)
             {
@@ -87,11 +121,13 @@ public class EnemyController : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
+            _audio.clip = _explosionSound;
+            _audio.Play();
             _animator.SetTrigger("Explotion");
             speed = 0;
             Destroy(gameObject, 2.38f);
             _collider.enabled = false;
-
+            _shield.SetActive(false);
 
             if (_player != null)
             {

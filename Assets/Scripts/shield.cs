@@ -9,19 +9,14 @@ public class shield : MonoBehaviour
     private Color _damageColor;
     [SerializeField]
     private Color _dangerColor;
-    private Color _base = new Color(1, 1, 1, 1);
-
+    private Color _base = new Color(1, 1, 1, 1);    
+    
     private void Awake()
     {
         _spritecolor = GetComponent<SpriteRenderer>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
         
     }
-
-    // Update is called once per frame
+    
     public void Damage(int lives)
     {
         
@@ -39,4 +34,6 @@ public class shield : MonoBehaviour
     {
         _spritecolor.color = _base;
     }
+
+    
 }
