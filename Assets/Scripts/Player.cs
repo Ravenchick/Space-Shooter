@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
             PlayNoAmmoSound();
         }
 
-
+        ammoAmount();
 
     }
 
@@ -317,11 +317,17 @@ public class Player : MonoBehaviour
         Shield.SetActive(true);
     }
 
+    void ammoAmount()
+    {
+        _UiManager.ammo(_ammoAmount);
+    }
     public void AddScore(int points)
     {
         Score += points;
         _UiManager.score(Score);
     }
+
+    
 
     void DamageEffect()
     {        

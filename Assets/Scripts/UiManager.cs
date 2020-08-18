@@ -11,6 +11,8 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _textScore;
     [SerializeField]
+    private TextMeshProUGUI _textAmmo;
+    [SerializeField]
     private Sprite[] _liveSprites;
     [SerializeField]
     private Image _LivesImg;
@@ -53,6 +55,11 @@ public class UiManager : MonoBehaviour
     public void score(int playerScore)
     {
         _textScore.text = "Score: " + playerScore;
+    }
+
+    public void ammo(int totalAmmo)
+    {
+        _textAmmo.text = "Ammo: " + totalAmmo;
     }
 
     public void UpdateLives(int currentLives)
