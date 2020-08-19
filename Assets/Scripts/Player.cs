@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float speed;
     [SerializeField]
     private GameObject _laser;
+    
     [SerializeField]
     private GameObject _TripleLaser;
     [SerializeField]
@@ -93,6 +94,8 @@ public class Player : MonoBehaviour
         _shieldscript = GameObject.Find("Shield").GetComponent<shield>();
 
         _shaking = GameObject.Find("Main Camera").GetComponent<CameraShaking>();
+
+        
         
     }
     // Start is called before the first frame update
@@ -196,21 +199,29 @@ public class Player : MonoBehaviour
     }    
 
     void ShootLaser()
-    {
+    {        
         _canFire = Time.time + _fireRate;
 
         if (TripleShootReady == true && _isProtonLaserActive == false)
         {
             Instantiate(_TripleLaser, _shootingPoint.position, Quaternion.identity);
+            
+
+            
         }
         else if(_isProtonLaserActive == true)
         {
             Instantiate(_protonLaser, _shootingPoint.position, Quaternion.identity);
+            
+
         }
         else
         {
             Instantiate(_laser, _shootingPoint.position, Quaternion.identity);
-        }
+            
+            
+
+        }       
         PlayLaserSound();
 
     }
@@ -245,6 +256,15 @@ public class Player : MonoBehaviour
             _shaking.RestarPosition();
         }
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy Laser")
+        {
+            Damage();
+            Destroy(collision.gameObject);
+        }
     }
 
     public void TripleShootPowerUp()

@@ -5,6 +5,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField]
     private float speed = 4f;
+    private float _xSpeed = 0f;
 
     private Player _player;
 
@@ -28,16 +29,42 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField]
     private int enemyId;
+
+    [SerializeField]
+    private GameObject _laser;    
+    private Transform _shootingPoint;
+    private bool _shoted = false;
+    private bool _isRamming = false;
+        
     private void Awake()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _animator = GetComponent<Animator>();        
         _audio = GetComponent<AudioSource>();
+        _shootingPoint = transform.Find("Shooting_point");        
         
     }
     void Start()
     {
-        transform.position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
+        if (enemyId == 3)
+        {
+            int randomizer = Random.Range(1, 3);
+
+            if (randomizer == 1)
+            {
+                transform.position = new Vector3(-7.42f, 6.49f, 0f);
+                _xSpeed = 2f;
+            }
+            else
+            {
+                transform.position = new Vector3(7.42f, 6.49f, 0f);
+                _xSpeed = -2f;
+            }
+        }
+        else
+        {
+            transform.position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
+        }
         StartCoroutine(scoring());
         _audio.clip = _explosionSound;
 
@@ -50,7 +77,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            Destroy(_shield);
+            _shield.SetActive(false);
             
         }
     }
@@ -63,12 +90,12 @@ public class EnemyController : MonoBehaviour
 
     void Movement()
     {
-        transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
+        transform.Translate(new Vector3(_xSpeed, -1, 0) * speed * Time.deltaTime);
 
         //para moverlo a un punto aleatorio en la parte de arriba
         if(transform.position.y < -6.63f)
         {
-            if (enemyId == 1)
+            if (enemyId != 0)
             {
                 Destroy(gameObject);
             }
@@ -117,7 +144,11 @@ public class EnemyController : MonoBehaviour
             _animator.SetTrigger("Explotion");
             Destroy(gameObject, 2.38f);
             _hurBox.SetActive(false);
-            _shield.SetActive(false);
+
+            if (_shield != null)
+            {
+                _shield.SetActive(false);
+            }
 
             if (_player != null)
             {
@@ -130,7 +161,7 @@ public class EnemyController : MonoBehaviour
             _audio.clip = _explosionSound;
             _audio.Play();
 
-            if (enemyId != 1)
+            if (true)
             {
                 _animator.SetTrigger("Explotion");
                 speed = 0;
@@ -142,21 +173,13 @@ public class EnemyController : MonoBehaviour
                     _player.Damage();
                 }
             }
-
-            else
-            {
-
-                _hurBox.SetActive(false);
-                if (_player != null)
-                {
-                    _player.Damage();
-                }
-            }
+            
         }
         
         if (other.gameObject.tag == "Clear")
         {
             gameObject.SetActive(false);
+            Debug.Log("clear found");
         }
 
     }
@@ -169,23 +192,51 @@ public class EnemyController : MonoBehaviour
         StartCoroutine(scoring());
     }
 
-    public IEnumerator tarjet(Collider2D _tarjet)
+    public void playerDetected(Collider2D _tarjet)
     {
+        switch (enemyId)
+        {
+            case 0:
+                break;
+            case 1:
+                if (_isRamming == false)
+                {
+                    StartCoroutine(ramming(_tarjet));
+                }
+                break;
+            case 2:
+                Shoting(_tarjet);
+                break;
+            case 3:
+                Shoting(_tarjet);
+                break;
+        }
+    }
+    public IEnumerator ramming(Collider2D _tarjet)
+    {
+        
+
         if (_tarjet.gameObject.tag == "Player")
-        {            
-            switch (enemyId)
-            {
-                case 0:
-                    break;
-                case 1:
-                    float _speedBackUp = speed;
-                    speed = 0f;
-                    yield return new WaitForSeconds(1f);
-                    speed = _speedBackUp + 7f;                    
-                    break;
-            }
+        {
+            _isRamming = true;
+            float _speedBackUp = speed;                                
+            speed = 0f;                    
+            yield return new WaitForSeconds(1f);                    
+            speed = _speedBackUp + 6f;                    
+                    
+            
         }
     }
 
+    void Shoting(Collider2D _tarjet)
+    {
+        if (_shoted == false && _tarjet.tag == "Player")
+        {
+            Debug.Log("pum pum");
+            Instantiate(_laser, _shootingPoint.position, Quaternion.identity);
+            _shoted = true;
+        }
+        
+    }
     
 }

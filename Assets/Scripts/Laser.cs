@@ -7,13 +7,21 @@ public class Laser : MonoBehaviour
 {
     [SerializeField]
     private float Speed;
-    
-    
 
-    
+    [SerializeField]
+    private int _shooterTag;
+
+    [SerializeField]
+    private bool _zigZagBeam = false;
+
+    private float _xSpeed = 0f;
     void Start()
     {
-        
+        if (_zigZagBeam == true)
+        {
+            Speed = 6f;
+            StartCoroutine(zigZagLaser());
+        }
     }
 
     // Update is called once per frame
@@ -25,18 +33,40 @@ public class Laser : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
+       
     }
 
     void movement()
     {
-        Vector3 direction = new Vector3(0, 1, 0);
+        int _direction;
+        if(_shooterTag == 0)
+        {
+            _direction = 1;
+        }
+        else
+        {
+            _direction = -1;
+        }
+                
+        Vector3 direction = new Vector3(_xSpeed, _direction, 0);
 
         transform.Translate(direction * Speed * Time.deltaTime);
 
         
     }
 
-   
+
+    IEnumerator zigZagLaser()
+    {
+        _xSpeed = 0.75f;
+        yield return new WaitForSeconds(0.25f);
+
+        while (true)
+        {            
+            _xSpeed *= -1;
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
 
 }

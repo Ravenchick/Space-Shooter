@@ -9,6 +9,7 @@ TagManager:
   - TripleShoot
   - Clear
   - ProtonLaser
+  - Enemy Laser
   layers:
   - Default
   - TransparentFX

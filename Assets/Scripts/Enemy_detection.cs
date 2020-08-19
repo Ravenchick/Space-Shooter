@@ -14,6 +14,6 @@ public class Enemy_detection : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(_enemy.tarjet(collision));
+        _enemy.playerDetected(collision);
     }
 }
