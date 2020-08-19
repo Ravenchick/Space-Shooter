@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class EnemyController : MonoBehaviour
 {
@@ -16,7 +13,8 @@ public class EnemyController : MonoBehaviour
 
     private Animator _animator;
 
-    private Collider2D _collider;
+    [SerializeField]
+    private GameObject _hurBox;
 
     private AudioSource _audio;
     [SerializeField]
@@ -28,13 +26,14 @@ public class EnemyController : MonoBehaviour
     private GameObject _shield;
     private bool _isShieldActive = false;
 
+    [SerializeField]
+    private int enemyId;
     private void Awake()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _animator = GetComponent<Animator>();
-        _collider = GetComponent<Collider2D>();
+        _animator = GetComponent<Animator>();        
         _audio = GetComponent<AudioSource>();
-        //_shield = GetComponent<GameObject>();
+        
     }
     void Start()
     {
@@ -44,14 +43,14 @@ public class EnemyController : MonoBehaviour
 
         float gotshield = Random.Range(0f, 10f);
 
-        if(gotshield > 7.5)
+        if (gotshield > 7f && enemyId == 0)
         {
             _shield.SetActive(true);
             _isShieldActive = true;
         }
         else
         {
-            _shield.SetActive(false);
+            Destroy(_shield);
             
         }
     }
@@ -69,11 +68,18 @@ public class EnemyController : MonoBehaviour
         //para moverlo a un punto aleatorio en la parte de arriba
         if(transform.position.y < -6.63f)
         {
-            transform.position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
+            if (enemyId == 1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                transform.position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
+            }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void BodyCollision(Collider2D other)
     {
         
         if (other.gameObject.tag == "Laser")
@@ -86,7 +92,7 @@ public class EnemyController : MonoBehaviour
                 _animator.SetTrigger("Explotion");
                 Destroy(gameObject, 2.38f);
                 Destroy(other.gameObject);
-                _collider.enabled = false;
+                _hurBox.SetActive(false);
 
                 if (_player != null)
                 {
@@ -109,8 +115,8 @@ public class EnemyController : MonoBehaviour
             _audio.Play();
             speed = 0;
             _animator.SetTrigger("Explotion");
-            Destroy(gameObject, 2.38f);            
-            _collider.enabled = false;
+            Destroy(gameObject, 2.38f);
+            _hurBox.SetActive(false);
             _shield.SetActive(false);
 
             if (_player != null)
@@ -123,15 +129,28 @@ public class EnemyController : MonoBehaviour
         {
             _audio.clip = _explosionSound;
             _audio.Play();
-            _animator.SetTrigger("Explotion");
-            speed = 0;
-            Destroy(gameObject, 2.38f);
-            _collider.enabled = false;
-            _shield.SetActive(false);
 
-            if (_player != null)
+            if (enemyId != 1)
             {
-                _player.Damage();
+                _animator.SetTrigger("Explotion");
+                speed = 0;
+                Destroy(gameObject, 2.38f);
+                _hurBox.SetActive(false);
+                _shield.SetActive(false);
+                if (_player != null)
+                {
+                    _player.Damage();
+                }
+            }
+
+            else
+            {
+
+                _hurBox.SetActive(false);
+                if (_player != null)
+                {
+                    _player.Damage();
+                }
             }
         }
         
@@ -148,6 +167,24 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         StartCoroutine(scoring());
+    }
+
+    public IEnumerator tarjet(Collider2D _tarjet)
+    {
+        if (_tarjet.gameObject.tag == "Player")
+        {            
+            switch (enemyId)
+            {
+                case 0:
+                    break;
+                case 1:
+                    float _speedBackUp = speed;
+                    speed = 0f;
+                    yield return new WaitForSeconds(1f);
+                    speed = _speedBackUp + 7f;                    
+                    break;
+            }
+        }
     }
 
     
