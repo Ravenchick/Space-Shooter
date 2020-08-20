@@ -123,7 +123,7 @@ public class Player : MonoBehaviour
         StaminaBar.instance.ConsumeStamina(1);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         CalculateMovement();
@@ -139,11 +139,12 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoAmount <= 0)
         {
             PlayNoAmmoSound();
-        }
-
+        }        
         ammoAmount();
 
     }
+
+   
 
     void CalculateMovement()
     {
@@ -279,6 +280,29 @@ public class Player : MonoBehaviour
         {
             Damage();
             Destroy(collision.gameObject);
+        }
+    }
+    
+    void OnTriggerStay2D(Collider2D collision)
+    {
+        
+      
+        Transform _collisionTransform = collision.GetComponent<Transform>();
+        if (collision.gameObject.tag == "Power Up" && Input.GetKeyDown(KeyCode.C))
+        {
+            StartCoroutine(movingToPlayer(_collisionTransform));            
+        }
+
+      
+    }
+
+    IEnumerator movingToPlayer(Transform _powerUpPosition)
+    {
+        while (true)
+        {
+            _powerUpPosition.transform.position = Vector3.Lerp(_powerUpPosition.transform.position, transform.position, 5f * Time.deltaTime);
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
