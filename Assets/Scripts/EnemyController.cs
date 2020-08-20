@@ -236,9 +236,8 @@ public class EnemyController : MonoBehaviour
 
     void Shoting(Collider2D _tarjet)
     {
-        if (_shoted == false && _tarjet.tag == "Player")
-        {
-            Debug.Log("pum pum");
+        if (_shoted == false && (_tarjet.tag == "Player" || _tarjet.tag == "Power Up"))
+        {            
             Instantiate(_laser, _shootingPoint.position, Quaternion.identity);
             _shoted = true;
         }

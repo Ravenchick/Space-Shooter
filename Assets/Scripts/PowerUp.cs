@@ -93,9 +93,14 @@ public class PowerUp : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag == "Clear")
+        else if (collision.gameObject.tag == "Clear")
         {
             gameObject.SetActive(false);
+        }
+        else if (collision.gameObject.tag == "Laser" || collision.gameObject.tag == "Enemy Laser")
+        {
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
     }
 
