@@ -16,6 +16,11 @@ public class Player : MonoBehaviour
     private bool _isProtonLaserActive;
     [SerializeField]
     private float _protonLaserDuration = 5f;
+    [SerializeField]
+    private GameObject _raLaser;
+    [SerializeField]
+    private float _raLaserDuration = 9f;
+    private bool _isRaLaserActive = false;
 
     [SerializeField]
     private float _sprintSpeed = 15f;
@@ -36,6 +41,8 @@ public class Player : MonoBehaviour
     private bool TripleShootReady = false;
     [SerializeField]
     private float TripleShootFireRate;
+    [SerializeField]
+    private float raShootFireRate;
     [SerializeField]
     private float TripleShootDuration;
     private bool _isSpeedBoostActive = false;
@@ -124,7 +131,10 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoAmount> 0)
         {
             ShootLaser();
-            _ammoAmount--;
+            if (_isRaLaserActive == false)
+            {
+                _ammoAmount--;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _ammoAmount <= 0)
         {
@@ -202,19 +212,24 @@ public class Player : MonoBehaviour
     {        
         _canFire = Time.time + _fireRate;
 
-        if (TripleShootReady == true && _isProtonLaserActive == false)
+        if (TripleShootReady == true && _isProtonLaserActive == false && _isRaLaserActive == false)
         {
             Instantiate(_TripleLaser, _shootingPoint.position, Quaternion.identity);
             
 
             
         }
-        else if(_isProtonLaserActive == true)
+        else if(_isProtonLaserActive == true && _isRaLaserActive == false)
         {
             Instantiate(_protonLaser, _shootingPoint.position, Quaternion.identity);
             
 
         }
+        else if(_isRaLaserActive == true)
+        {
+            Instantiate(_raLaser, _shootingPoint.position, Quaternion.identity);
+        }
+
         else
         {
             Instantiate(_laser, _shootingPoint.position, Quaternion.identity);
@@ -274,11 +289,12 @@ public class Player : MonoBehaviour
         _ammoAmount = 30;
     }
 
-    IEnumerator TripleShootPower()
+    public IEnumerator TripleShootPower()
     {
         PlayPowerUpSound();
         float fireRateBackUp = _fireRate;
-
+        _isRaLaserActive = true;
+        _ammoAmount += 10;
         _fireRate = TripleShootFireRate;
 
         yield return new WaitForSeconds(TripleShootDuration);
@@ -335,6 +351,38 @@ public class Player : MonoBehaviour
         _shieldscript.shieldReset();
         _isShieldActivate = true;
         Shield.SetActive(true);
+    }
+
+    public void startRaPower()
+    {
+        StartCoroutine(raPowerActive());
+    }
+
+    [SerializeField]
+    Color _color;
+    SpriteRenderer _sprite;
+    IEnumerator raPowerActive()
+    {     
+                
+        _sprite = GetComponent<SpriteRenderer>();
+        _sprite.color = _color;
+
+        PlayPowerUpSound();
+        float fireRateBackUp = _fireRate;
+        _fireRate = raShootFireRate;
+
+        _isRaLaserActive = true;
+
+        yield return new WaitForSeconds(_raLaserDuration);
+        
+
+        _isRaLaserActive = false;
+
+        _fireRate = fireRateBackUp;
+
+        Damage();
+
+        _sprite.color = Color.white;
     }
 
     void ammoAmount()

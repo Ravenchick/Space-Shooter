@@ -89,6 +89,9 @@ public class PowerUp : MonoBehaviour
                     case 5:
                         player.activateProtonLaser();
                         break;
+                    case 6:
+                        player.startRaPower();
+                        break;
                 }
             }
         }
