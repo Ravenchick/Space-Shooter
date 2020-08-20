@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     private Transform _shootingPoint;
     private bool _shoted = false;
     private bool _isRamming = false;
+    private bool dodged = false;
         
     private void Awake()
     {
@@ -208,7 +209,12 @@ public class EnemyController : MonoBehaviour
                 Shoting(_tarjet);
                 break;
             case 3:
+                _xSpeed *= -1f;
                 Shoting(_tarjet);
+                break;
+            case 4:
+                dodged = false;
+                StartCoroutine(dodge(_tarjet));
                 break;
         }
     }
@@ -238,5 +244,22 @@ public class EnemyController : MonoBehaviour
         }
         
     }
-    
+    IEnumerator dodge(Collider2D _tarjet)
+    {
+        if (_tarjet.gameObject.tag == "Laser")
+        {
+            if (dodged == false)
+            {
+                _xSpeed = 4f;
+
+                if (transform.position.x > 0f)
+                {
+                    _xSpeed *= -1f;
+                }
+            }
+            yield return new WaitForSeconds(0.25f);
+            _xSpeed = 0f;
+            dodged = true;
+        }
+    }
 }
