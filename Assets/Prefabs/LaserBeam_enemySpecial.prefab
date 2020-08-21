@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d7d98d3c4836f4c89b43306f307826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 12
+  Speed: 8
   _shooterTag: 1
   _zigZagBeam: 1
 --- !u!212 &8207168423211104379

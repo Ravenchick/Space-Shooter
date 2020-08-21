@@ -6,10 +6,12 @@ using UnityEngine.UIElements;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject _enemy;
+    [SerializeField]
+    private GameObject[] _enemy;
     private bool _spawning = true;
 
-    public GameObject[] powerBoost;
+    [SerializeField]
+    private GameObject[] powerBoost;
 
     Vector3 _position;
 
@@ -91,9 +93,71 @@ public class SpawnManager : MonoBehaviour
     {
         while (_spawning ==true)
         {
+            int enemyId = 0;
+            float enemyRandomizer = Random.Range(0f, 10f);
+
+            switch (waveNumber)
+            {
+                case 1:
+                    if (enemyRandomizer < 7)
+                    {
+                        enemyId = 0;
+                    }
+                    else
+                    {
+                        enemyId = 1;
+                    }
+                    break;
+                case 2:
+                    if (enemyRandomizer < 4)
+                    {
+                        enemyId = 0;
+                    }
+                    else if (enemyRandomizer < 6)
+                    {
+                        enemyId = 1;
+                    }
+                    else if (enemyRandomizer < 8)
+                    {
+                        enemyId = 2;
+                    }
+                    else
+                    {
+                        enemyId = 3;
+                    }
+                    break;
+                case 3:
+                    if (enemyRandomizer < 1.8f)
+                    {
+                        enemyId = 5;
+                    }
+                    else if (enemyRandomizer < 3.5f)
+                    {
+                        enemyId = 1;
+                    }
+                    else if (enemyRandomizer < 5.5f)
+                    {
+                        enemyId = 2;
+                    }
+                    else if (enemyRandomizer < 6.5)
+                    {
+                        enemyId = 3;
+                    }
+                    else if (enemyRandomizer < 8)
+                    {
+                        enemyId = 4;
+                    }
+                    else
+                    {
+                        enemyId = 0;
+                    }
+                    break;
+            }
+
+
             float _timer = Random.Range(_enemyA, _enemyB);
             Vector3 _position = new Vector3(Random.Range(-7.42f, 7.75f), 6.49f, 0f);
-            GameObject newEnemy = Instantiate(_enemy, _position, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_enemy[enemyId], _position, Quaternion.identity);
             newEnemy.transform.parent = gameObject.transform;
 
             yield return new WaitForSeconds(_timer);

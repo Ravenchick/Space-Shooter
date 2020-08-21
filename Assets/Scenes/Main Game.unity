@@ -809,7 +809,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e860f2ec584ca0742bf6a7de2c631932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 3984412958483374827, guid: 342d6edf1207ac247835b628fc43ee83, type: 3}
+  _enemy:
+  - {fileID: 3984412958483374827, guid: 342d6edf1207ac247835b628fc43ee83, type: 3}
+  - {fileID: 3984412958483374827, guid: 3a6c2a5277f96b24bb410463b7e1d8b4, type: 3}
+  - {fileID: 3984412958483374827, guid: 77f889aed8efeb949a8d96b3a15f3c8b, type: 3}
+  - {fileID: 3984412958483374827, guid: 6ac9ffe5d7af6b743b53abe3562c6947, type: 3}
+  - {fileID: 3984412958483374827, guid: 06caf25e247a3af40b7e185d250804f3, type: 3}
+  - {fileID: 3984412958483374827, guid: 5f405f866ff44ba4cb8d05cb089cb568, type: 3}
   powerBoost:
   - {fileID: 3682074192640088955, guid: d94535abf9e203e4f839a8f85dd930e1, type: 3}
   - {fileID: 578638558954576315, guid: 5bb893359d15dca45ba7870cf1e86504, type: 3}

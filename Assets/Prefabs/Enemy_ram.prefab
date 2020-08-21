@@ -127,7 +127,7 @@ MonoBehaviour:
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _shieldDown: {fileID: 8300000, guid: 0145fef4359228b4f86031d1c52bdd16, type: 3}
   _shield: {fileID: 737071820814667712}
-  enemyId: 3
+  enemyId: 1
   _laser: {fileID: 0}
 --- !u!212 &-5350720295083876700
 SpriteRenderer:
