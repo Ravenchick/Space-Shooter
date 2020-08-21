@@ -819,6 +819,10 @@ MonoBehaviour:
   - {fileID: 6155749794190156291, guid: b9d9914e1b4ef71409c3b2bdbdcc7022, type: 3}
   _asteroid: {fileID: 81938874933643876, guid: 13d0561348d446344893882cd755e2ac, type: 3}
   _clear: {fileID: 823537731}
+  firstWaveDuration: 40
+  secondWaveDuration: 120
+  thirdWaveDuration: 200
+  waveResetTime: 10
 --- !u!4 &460083492
 Transform:
   m_ObjectHideFlags: 0

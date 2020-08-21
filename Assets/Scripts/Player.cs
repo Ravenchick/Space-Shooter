@@ -300,7 +300,10 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            _powerUpPosition.transform.position = Vector3.Lerp(_powerUpPosition.transform.position, transform.position, 5f * Time.deltaTime);
+            if (_powerUpPosition != null)
+            {
+                _powerUpPosition.transform.position = Vector3.Lerp(_powerUpPosition.transform.position, transform.position, 5f * Time.deltaTime);
+            }
 
             yield return new WaitForEndOfFrame();
         }

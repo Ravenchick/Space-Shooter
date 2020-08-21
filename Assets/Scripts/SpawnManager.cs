@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
     
     //Increasing difficulty
     private float _enemyA = 1.5f;
-    private float _enemyB = 3f;
+    private float _enemyB = 4f;
     private float _boostA = 16f;
     private float _boostB = 20f;
     private float _asteroidA = 16f;
@@ -27,6 +27,8 @@ public class SpawnManager : MonoBehaviour
     //Clearing
     [SerializeField]
     private GameObject _clear;
+
+    private int waveNumber;
 
     private void Awake()
     {
@@ -39,7 +41,8 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(StartGame());
-        
+        StartCoroutine(waveSystem());
+
     }
 
     // Update is called once per frame
@@ -49,19 +52,39 @@ public class SpawnManager : MonoBehaviour
 
     }
 
+    private float goingFaster = 0;
     IEnumerator StartGame()
     {
         yield return new WaitForSeconds(3f);
-        StartCoroutine(enemySpawn());
-        yield return new WaitForSeconds(10f);
+        StartCoroutine(enemySpawn());        
+        yield return new WaitForSeconds(7 - goingFaster);
         StartCoroutine(SpawnBasicPowerUps());
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(4f - goingFaster);
         StartCoroutine(AsteroidSpawn());
         StartCoroutine(ProtonSpawn());
         yield return new WaitForSeconds(2f);
         StartCoroutine(BoostSpawn());
-        StartCoroutine(gettingHard());
+
+        goingFaster += 1f;
         
+    }
+
+    void stopAndContinue(bool _onOff)
+    {
+        if (_onOff == false)
+        {
+            _spawning = false;
+            StopCoroutine(enemySpawn());
+            StopCoroutine(SpawnBasicPowerUps());
+            StopCoroutine(ProtonSpawn());
+            StopCoroutine(BoostSpawn());
+            StopCoroutine(AsteroidSpawn());
+        }
+        else
+        {
+            _spawning = true;
+            StartCoroutine(StartGame());
+        }
     }
 
     IEnumerator enemySpawn()
@@ -157,29 +180,53 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    IEnumerator gettingHard()
+    [SerializeField]
+    private float firstWaveDuration;
+    [SerializeField]
+    private float secondWaveDuration;
+    [SerializeField]
+    private float thirdWaveDuration;
+    [SerializeField]
+    private float waveResetTime;
+    IEnumerator waveSystem()
     {
-        while (_spawning == true)
-        {
-            if (_enemyA > 0.1f && _enemyB > 0.5f)
-            {
-                _enemyA -= 0.1f;
-                _enemyB -= 0.1f;
-            }
-            if (_boostA > 10f && _boostB > 11f)
-            {
-                _boostA -= 1f;
-                _boostB -= 1f;
-            }
-            if (_asteroidA > 3f && _asteroidB > 4.5f)
-            {
-                _boostA -= 0.6f;
-                _boostB -= 0.6f;
-            }
-            yield return new WaitForSeconds(3f);
-        }
-    }
+        //first wave
+        waveNumber = 1;
+        yield return new WaitForSeconds(firstWaveDuration);
+        stopAndContinue(false);
+        yield return new WaitForSeconds(waveResetTime);
 
+        //second wave
+        waveNumber = 2;
+        Debug.Log("Second wave on");
+        stopAndContinue(true);
+        gettingHard();
+        yield return new WaitForSeconds(secondWaveDuration);
+        stopAndContinue(false);
+        yield return new WaitForSeconds(waveResetTime);
+
+        //third and final wave
+        waveNumber = 3;
+        stopAndContinue(true);
+        gettingHard();
+        yield return new WaitForSeconds(thirdWaveDuration);
+        stopAndContinue(false);
+        yield return new WaitForSeconds(waveResetTime + 3f);
+
+        //Boss come in
+
+        
+
+    }
+    void gettingHard()
+    {
+        _enemyA -= 0.5f;
+        _enemyB -= 0.5f;
+        _boostA -= 2f;
+        _boostB -= 2f;
+        _asteroidA -= 2f;
+        _asteroidB -= 2f;
+    }
     IEnumerator SpawnBasicPowerUps()
     {
         while (_spawning == true)
