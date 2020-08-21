@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public float speed;
+    [SerializeField]
+    private float speed;
+    private float initialSpeed;
     [SerializeField]
     private GameObject _laser;
     
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
+    private float initalFireRate;
     [SerializeField]
     private int _live = 3;
     private SpawnManager _spawnManager;
@@ -121,6 +124,9 @@ public class Player : MonoBehaviour
         _speedBackUp = speed;
 
         StaminaBar.instance.ConsumeStamina(1);
+
+        initialSpeed = speed;
+        initalFireRate = _fireRate;
     }
 
     
@@ -140,6 +146,14 @@ public class Player : MonoBehaviour
         {
             PlayNoAmmoSound();
         }        
+
+        //Max ammo amount
+        if (_ammoAmount > 40)
+        {
+            _ammoAmount = 40;
+        }
+
+
         ammoAmount();
 
     }
@@ -274,9 +288,9 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void laserDamage(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy Laser")
+        if (collision.gameObject.CompareTag("Enemy Laser"))
         {
             Damage();
             Destroy(collision.gameObject);
@@ -313,13 +327,12 @@ public class Player : MonoBehaviour
     {
         TripleShootReady = true;
         StartCoroutine(TripleShootPower());
-        _ammoAmount = 30;
+        _ammoAmount += 10;
     }
 
     public IEnumerator TripleShootPower()
     {
-        PlayPowerUpSound();
-        float fireRateBackUp = _fireRate;
+        PlayPowerUpSound();        
         TripleShootReady = true;
         _ammoAmount += 10;
         _fireRate = TripleShootFireRate;
@@ -328,7 +341,7 @@ public class Player : MonoBehaviour
 
         TripleShootReady = false;
 
-        _fireRate = fireRateBackUp;
+        _fireRate = initalFireRate;
 
 
     }
@@ -364,7 +377,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSeconds(_speedBoostDuration);
 
-        speed = _speedBackUp;
+        speed = initialSpeed;
         _speedEffect.gameObject.SetActive(false);
         _thruster.gameObject.SetActive(true);
         _isSpeedBoostActive = false;
@@ -394,8 +407,7 @@ public class Player : MonoBehaviour
         _sprite = GetComponent<SpriteRenderer>();
         _sprite.color = _color;
 
-        PlayPowerUpSound();
-        float fireRateBackUp = _fireRate;
+        PlayPowerUpSound();        
         _fireRate = raShootFireRate;
 
         _isRaLaserActive = true;
@@ -405,7 +417,14 @@ public class Player : MonoBehaviour
 
         _isRaLaserActive = false;
 
-        _fireRate = fireRateBackUp;
+        if (TripleShootReady == true)
+        {
+            _fireRate = TripleShootFireRate;
+        }
+        else
+        {
+            _fireRate = initalFireRate;
+        }
 
         Damage();
 

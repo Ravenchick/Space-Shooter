@@ -65,7 +65,7 @@ public class PowerUp : MonoBehaviour
         {
             Destroy(gameObject);
 
-            Player player = collision.gameObject.GetComponent<Player>();
+            Player player = collision.gameObject.GetComponentInParent<Player>();
 
             if (player != null)
             {

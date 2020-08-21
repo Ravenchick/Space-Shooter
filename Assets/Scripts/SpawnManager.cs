@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
     
     //Increasing difficulty
     private float _enemyA = 1.5f;
-    private float _enemyB = 4f;
+    private float _enemyB = 3f;
     private float _boostA = 16f;
     private float _boostB = 20f;
     private float _asteroidA = 16f;
@@ -202,6 +202,14 @@ public class SpawnManager : MonoBehaviour
             newPowerUp.transform.parent = gameObject.transform;
 
             yield return new WaitForSeconds(_timer);
+
+            int raBoost = Random.Range(0, 4);
+            if(raBoost < 3)
+            {
+                GameObject newRaPowerUp = Instantiate(powerBoost[6], _position, Quaternion.identity);
+                newRaPowerUp.transform.parent = gameObject.transform;
+                yield return new WaitForSeconds(_timer);
+            }            
         }
 
 
@@ -284,8 +292,8 @@ public class SpawnManager : MonoBehaviour
     }
     void gettingHard()
     {
-        _enemyA -= 0.5f;
-        _enemyB -= 0.5f;
+        _enemyA -= 0.3f;
+        _enemyB -= 0.3f;
         _boostA -= 2f;
         _boostB -= 2f;
         _asteroidA -= 2f;
@@ -338,8 +346,8 @@ public class SpawnManager : MonoBehaviour
         while (_spawning == true)
         {
             float _isSpawning = Random.Range(0f, 10f);
-
-            if (_isSpawning > 8)
+            int _specialBoost = Random.Range(5, 7);
+            if (_isSpawning < 7)
             {
 
 
@@ -362,10 +370,11 @@ public class SpawnManager : MonoBehaviour
 
                 }
 
-                GameObject newPowerUp = Instantiate(powerBoost[5], _position, Quaternion.identity);
+                GameObject newPowerUp = Instantiate(powerBoost[_specialBoost], _position, Quaternion.identity);
                 newPowerUp.transform.parent = gameObject.transform;
+                
             }
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(7f);
         }
     }
 }

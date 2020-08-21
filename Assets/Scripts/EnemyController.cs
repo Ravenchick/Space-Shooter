@@ -227,8 +227,8 @@ public class EnemyController : MonoBehaviour
             _isRamming = true;
             float _speedBackUp = speed;                                
             speed = 0f;                    
-            yield return new WaitForSeconds(1f);                    
-            speed = _speedBackUp + 6f;                    
+            yield return new WaitForSeconds(0.3f);                    
+            speed = _speedBackUp + 10f;                    
                     
             
         }
