@@ -317,7 +317,7 @@ public class Player : MonoBehaviour
     {
         PlayPowerUpSound();
         float fireRateBackUp = _fireRate;
-        _isRaLaserActive = true;
+        TripleShootReady = true;
         _ammoAmount += 10;
         _fireRate = TripleShootFireRate;
 
