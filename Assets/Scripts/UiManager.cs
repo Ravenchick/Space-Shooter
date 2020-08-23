@@ -17,7 +17,7 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Image _LivesImg;
     private GameObject _gameOver;
-    private GameObject _powerUp;
+    private GameObject _gameWin;
     [SerializeField]
     private float _gameOverAnimationRatio = 0.5f;
     private GameObject _TryAgain;
@@ -27,13 +27,14 @@ public class UiManager : MonoBehaviour
     {
         _gameOver = GameObject.Find("Game over_text");
         _TryAgain = GameObject.Find("Reset_text");
-        
+        _gameWin = GameObject.Find("Win_screen");
     }
     void Start()
     {
         _textScore.text = "Score: 0";
         _gameOver.SetActive(false);
         _TryAgain.SetActive(false);
+        _gameWin.SetActive(false);
 
         if(_gameOver == null)
         {
@@ -72,6 +73,12 @@ public class UiManager : MonoBehaviour
         StartCoroutine(GameOverAnimation());
         _TryAgain.SetActive(true);
         _isGameOver = true;
+    }
+
+    public void GameWin()
+    {
+        _isGameOver = true;
+        _gameWin.SetActive(true);
     }
 
     IEnumerator GameOverAnimation()

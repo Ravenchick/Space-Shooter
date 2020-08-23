@@ -32,10 +32,14 @@ public class SpawnManager : MonoBehaviour
 
     private int waveNumber;
 
+    private GameObject _boss;
+
+    private Player _player;
+
     private void Awake()
     {
-        
-        
+        _boss = GameObject.Find("Boss");
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
 
 
@@ -44,6 +48,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(StartGame());
         StartCoroutine(waveSystem());
+        _boss.SetActive(false);
 
     }
 
@@ -273,6 +278,7 @@ public class SpawnManager : MonoBehaviour
         Debug.Log("Second wave on");
         stopAndContinue(true);
         gettingHard();
+        _player.recoverHealth();
         yield return new WaitForSeconds(secondWaveDuration);
         stopAndContinue(false);
         yield return new WaitForSeconds(waveResetTime);
@@ -281,19 +287,24 @@ public class SpawnManager : MonoBehaviour
         waveNumber = 3;
         stopAndContinue(true);
         gettingHard();
+        _player.recoverHealth();
         yield return new WaitForSeconds(thirdWaveDuration);
         stopAndContinue(false);
+        _player.recoverHealth();
         yield return new WaitForSeconds(waveResetTime + 3f);
 
         //Boss come in
 
-        
+        _boss.SetActive(true);
+        stopAndContinue(true);
+        StopCoroutine(enemySpawn());
+
 
     }
     void gettingHard()
     {
-        _enemyA -= 0.3f;
-        _enemyB -= 0.3f;
+        _enemyA -= 0.5f;
+        _enemyB -= 0.6f;
         _boostA -= 2f;
         _boostB -= 2f;
         _asteroidA -= 2f;
@@ -303,7 +314,7 @@ public class SpawnManager : MonoBehaviour
     {
         while (_spawning == true)
         {
-            float _timer = Random.Range(7f, 10f);
+            float _timer = Random.Range(5f, 10f);
             float _randomizerPosition = Random.Range(-1f, 1f);
             float _boostRandomizer = Random.Range(0, 10);
             float randomHigh = Random.Range(-2.73f, 4.55f);
@@ -326,7 +337,7 @@ public class SpawnManager : MonoBehaviour
 
             }
 
-            if(_boostRandomizer > 7)
+            if(_boostRandomizer > 5)
             {
                 _boostSelected = 4;
             }
@@ -347,7 +358,7 @@ public class SpawnManager : MonoBehaviour
         {
             float _isSpawning = Random.Range(0f, 10f);
             int _specialBoost = Random.Range(5, 7);
-            if (_isSpawning < 7)
+            if (_isSpawning < 6)
             {
 
 
