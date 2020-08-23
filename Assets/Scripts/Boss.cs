@@ -33,7 +33,10 @@ public class Boss : MonoBehaviour
     private AudioClip _explosionSound;
     [SerializeField]
     private AudioClip _laserSound;
-        
+
+    private UiManager _UiManager;
+
+    private SpawnManager _spawnManager;
     private void Awake()
     {        
         _shootingPoint = GameObject.Find("Boss Shooting Point").GetComponent<Transform>();
@@ -42,6 +45,8 @@ public class Boss : MonoBehaviour
         _animator = GetComponent<Animator>();
         _hurtBox = GameObject.Find("Boss Hurt Box");
         _audio = GetComponent<AudioSource>();
+        _UiManager = GameObject.Find("Canvas").GetComponent<UiManager>();
+        _spawnManager = GameObject.Find("Spawner").GetComponent<SpawnManager>();
     }
     
     void Start()
@@ -127,11 +132,13 @@ public class Boss : MonoBehaviour
 
     IEnumerator destruction()
     {
-        StopCoroutine(playerFound());
-        _hurtBox.SetActive(false);
-        _animator.SetBool("Laser", false);
-        _laserSpin = false;
         _hitBox.SetActive(false);
+        _hurtBox.SetActive(false);
+        yield return new WaitForEndOfFrame();
+        _spawnManager.OnPLayersDead();
+        StopCoroutine(playerFound());        
+        _animator.SetBool("Laser", false);
+        _laserSpin = false;        
         _radar.SetActive(false);
         Instantiate(_explosion, transform.position, Quaternion.identity);
         explosionSound();
@@ -141,7 +148,9 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Instantiate(_explosion, new Vector3(transform.position.x - 0.2f, transform.position.y - 0.15f, transform.position.z), Quaternion.identity);        
         yield return new WaitForSeconds(1f);
-        explosionSound();
+        explosionSound();        
+        yield return new WaitForSeconds(0.5f);
+        _UiManager.GameWin();
         Destroy(gameObject);
 
     }

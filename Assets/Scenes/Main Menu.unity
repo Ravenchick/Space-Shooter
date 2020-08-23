@@ -680,7 +680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 337, y: -85}
+  m_AnchoredPosition: {x: 337, y: -127}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740195054
@@ -702,7 +702,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ESCAPE TO CLOSE THE GAME
+  m_text: USE ESCAPE TO CLOSE THE GAME
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -771,10 +771,10 @@ MonoBehaviour:
   m_margin: {x: -343.45255, y: 0, z: 345.82965, w: -66.99026}
   m_textInfo:
     textComponent: {fileID: 740195054}
-    characterCount: 24
+    characterCount: 28
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 5
+    spaceCount: 5
+    wordCount: 6
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -1056,7 +1056,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'W/A/S/D - MOVEMENT
 
-    SPACE - SHOOT'
+    SPACE - SHOOT
+
+    C- TAKE POWER UPS
+
+    SHIFT-
+    SPEED UP'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1125,12 +1130,12 @@ MonoBehaviour:
   m_margin: {x: -343.45255, y: 0, z: 80.74382, w: -66.99026}
   m_textInfo:
     textComponent: {fileID: 2031146387}
-    characterCount: 32
+    characterCount: 66
     spriteCount: 0
-    spaceCount: 5
-    wordCount: 9
+    spaceCount: 12
+    wordCount: 16
     linkCount: 0
-    lineCount: 2
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

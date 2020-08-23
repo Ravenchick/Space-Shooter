@@ -1359,10 +1359,10 @@ MonoBehaviour:
   - {fileID: 6155749794190156291, guid: bf0a091c659ea0544ab54f4840dd6ac9, type: 3}
   _asteroid: {fileID: 81938874933643876, guid: 13d0561348d446344893882cd755e2ac, type: 3}
   _clear: {fileID: 823537731}
-  firstWaveDuration: 20
-  secondWaveDuration: 40
-  thirdWaveDuration: 60
-  waveResetTime: 10
+  firstWaveDuration: 25
+  secondWaveDuration: 35
+  thirdWaveDuration: 45
+  waveResetTime: 8
 --- !u!4 &460083492
 Transform:
   m_ObjectHideFlags: 0
@@ -2642,7 +2642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   _laser: {fileID: 5814683796088153823, guid: 4838ab591492b094c97d3b04e201354f, type: 3}
-  _lives: 20
+  _lives: 25
   _explosion: {fileID: 4178566712661308148, guid: ff30a0a4eed0f8a40919aaf7edc3ce9c,
     type: 3}
   _explosionSound: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}

@@ -51,13 +51,7 @@ public class SpawnManager : MonoBehaviour
         _boss.SetActive(false);
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-
-    }
+    
 
     private float goingFaster = 0;
     IEnumerator StartGame()
@@ -388,4 +382,5 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(7f);
         }
     }
+    
 }
